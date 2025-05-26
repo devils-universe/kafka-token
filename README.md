@@ -21,7 +21,8 @@ $KAFKA is the official token of Devil’s Universe — a Web3-native artistic an
 - [Telegram](https://t.me/devils_kafka)
 
 ---
-
+> ✅ Verified flat contract: `KafkaToken_flat.sol`  
+> Source compiled and matched with on-chain bytecode
 ## Disclaimer
 
 This project is symbolic and artistic in nature. $KAFKA is a token for storytelling, expression, and exploration within a fictional universe.
