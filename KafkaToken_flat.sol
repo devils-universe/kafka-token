@@ -51,6 +51,7 @@ interface IERC20 {
 contract ERC20 is Context, IERC20 {
     mapping(address => uint256) private _balances;
     mapping(address => mapping(address => uint256)) private _allowances;
+
     uint256 private _totalSupply;
     string private _name;
     string private _symbol;
@@ -96,11 +97,14 @@ contract ERC20 is Context, IERC20 {
 
     function transferFrom(address sender, address recipient, uint256 amount) public virtual override returns (bool) {
         _transfer(sender, recipient, amount);
+
         uint256 currentAllowance = _allowances[sender][_msgSender()];
         require(currentAllowance >= amount, "ERC20: transfer amount exceeds allowance");
+
         unchecked {
             _approve(sender, _msgSender(), currentAllowance - amount);
         }
+
         return true;
     }
 
@@ -110,6 +114,7 @@ contract ERC20 is Context, IERC20 {
 
         uint256 senderBalance = _balances[sender];
         require(senderBalance >= amount, "ERC20: transfer amount exceeds balance");
+
         unchecked {
             _balances[sender] = senderBalance - amount;
         }
@@ -120,8 +125,10 @@ contract ERC20 is Context, IERC20 {
 
     function _mint(address account, uint256 amount) internal virtual {
         require(account != address(0), "ERC20: mint to the zero address");
+
         _totalSupply += amount;
         _balances[account] += amount;
+
         emit Transfer(address(0), account, amount);
     }
 
@@ -135,7 +142,7 @@ contract ERC20 is Context, IERC20 {
 }
 
 contract Kafka is ERC20, Ownable {
-    constructor() ERC20("Kafka", "KAFKA") {
-        _mint(msg.sender, 1_000_000_000_000_000_000_000_000);
+    constructor() ERC20("Kafka", "KAFKA") Ownable() {
+        _mint(msg.sender, 1_000_000_000_000_000_000_000_000); // 1 триллион токенов с 18 знаками
     }
 }
