@@ -7,9 +7,9 @@ $KAFKA is the official token of Devil’s Universe — a Web3-native artistic an
 ## Token Info
 
 - **Network:** Binance Smart Chain (BEP-20)
-- **Contract Address:** `0x590feD91b5A4ABE1ABAc1427f8d28f25c9f2142`
+- **Contract Address:** `0x0023caf04B4fAc8B894Fc7fA49d38ddc4606a816`
 - **Decimals:** 18  
-- **Total Supply:** 1,000,000,000,000,000,000,000,000 KAFKA
+- **Total Supply:** 1,000,000, KAFKA
 
 ---
 
