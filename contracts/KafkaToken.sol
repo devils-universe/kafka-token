@@ -1,4 +1,11 @@
 // SPDX-License-Identifier: MIT
+/**
+ * @title Kafka Token ($KAFKA)
+ * @dev BEP-20 compatible token for the Devil's Universe project.
+ * Website: https://devilsuniverse.com
+ * Twitter: https://twitter.com/devils_kafka
+ * Telegram: https://t.me/DevilsUniversecom
+ */
 pragma solidity ^0.8.0;
 
 abstract contract Context {
