@@ -1,6 +1,6 @@
 from aiogram import Bot, Dispatcher, types
 from aiogram.utils import executor
-from handlers import register_handlers
+from TelegramBot.handlers import register_handlers
 import config
 
 bot = Bot(token=config.BOT_TOKEN)
