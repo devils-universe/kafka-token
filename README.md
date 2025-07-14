@@ -18,7 +18,7 @@ Welcome to the official repository of the $KAFKA token — the native digital cu
 - [https://devilsuniverse.com](https://devilsuniverse.com)
 
 ## 📄 Whitepaper
-- [Whitepaper (PDF)](https://github.com/yourusername/kafka-token/blob/main/whitepaper.pdf)
+- [Whitepaper (PDF)](https://github.com/devils-universe/kafka-token/blob/92a2be61f3edb2701a362e1fd7d68cbb222cc549/assets/KAFKA_Whitepaper_Short.pdf))
 
 ## 🔗 Socials
 - Twitter: [@devils_kafka](https://twitter.com/devils_kafka)
