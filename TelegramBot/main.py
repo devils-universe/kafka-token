@@ -20,7 +20,6 @@ TWITTER_URL = "https://twitter.com/devils_kafka"
 TELEGRAM_URL = "https://t.me/devilsuniversecom"
 FACEBOOK_URL = "https://www.facebook.com/devilsuniversecom"
 STICKER_URL = "https://devilsuniverse.com/stickers"
-MEME_URL = "https://devilsuniverse.com/meme-tool"
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     keyboard = [
