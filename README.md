@@ -26,6 +26,7 @@ MIT
 ## 📜 Source Code
 
 ## 🤖 Telegram Bot
+The bot provides a simple menu with buttons to buy $KAFKA, order memes or stickers, and complete simple social tasks for rewards.
 The repository contains a simple Telegram bot located in the `TelegramBot/` directory.
 To run it locally:
 
