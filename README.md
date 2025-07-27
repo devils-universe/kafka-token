@@ -31,3 +31,17 @@ Devils Universe is a narrative-driven NFT and crypto universe centered around a 
 ## 📦 License
 MIT
 ## 📜 Source Code
+
+## 🤖 Telegram Bot
+The repository contains a simple Telegram bot located in the `TelegramBot/` directory.
+To run it locally:
+
+1. Create a `.env` file based on `.env.example` and set your `BOT_TOKEN`. Optionally set `LOG_CHAT_ID` for logging sticker requests.
+2. Install requirements: `pip install -r TelegramBot/requirements.txt`.
+3. Start the bot from the `TelegramBot` folder:
+   ```bash
+   python main.py
+   ```
+
+The `.env.example` file includes a sample token for convenience.
+Replace it with your own token when running the bot in production.
