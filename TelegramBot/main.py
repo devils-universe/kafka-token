@@ -1,7 +1,10 @@
 from aiogram import Bot, Dispatcher, types
 from aiogram.utils import executor
+from dotenv import load_dotenv
 from handlers import register_handlers
 import config
+
+load_dotenv()
 
 bot = Bot(token=config.BOT_TOKEN)
 dp = Dispatcher(bot)
