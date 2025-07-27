@@ -26,8 +26,11 @@ MIT
 ## 📜 Source Code
 
 ## 🤖 Telegram Bot
-The repository contains a simple Telegram bot located in the `TelegramBot/` directory.
+The repository contains a simple Telegram bot built with [Aiogram](https://docs.aiogram.dev/) located in the `TelegramBot/` directory.
 To run it locally:
+
+The bot shows three buttons: **Купить KAFKA**, **Услуги**, and **Задания**. Each option sends a short
+description when pressed.
 
 1. Create a `.env` file based on `.env.example` and set your `BOT_TOKEN`. Optionally set `LOG_CHAT_ID` for logging sticker requests.
 2. Install requirements: `pip install -r TelegramBot/requirements.txt`.
