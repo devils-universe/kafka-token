@@ -7,8 +7,8 @@ import config
 
 def main_menu() -> types.ReplyKeyboardMarkup:
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    markup.row("\ud83e\ude99 Buy $KAFKA", "\ud83c\udf81 Services")
-    markup.row("\ud83d\udccb Tasks")
+    markup.row("🦙 Buy $KAFKA", "🎁 Services")
+    markup.row("📋 Tasks")
     return markup
 
 
@@ -24,7 +24,7 @@ class TaskSubmission(StatesGroup):
 
 async def start_command(message: types.Message):
     await message.answer(
-        "Welcome to Kafka Life Bot! \ud83d\udc3f\ufe0f Choose an option:",
+        "Welcome to Kafka Life Bot! 🐿️ Choose an option:",
         reply_markup=main_menu(),
     )
 
@@ -38,14 +38,14 @@ async def buy_kafka(message: types.Message):
 
 async def show_services(message: types.Message):
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    markup.row("\ud83c\udf9d Create Meme", "\ud83d\udce6 Buy sticker pack")
-    markup.row("\ud83d\udd19 Back")
+    markup.row("🎝 Create Meme", "📦 Buy sticker pack")
+    markup.row("🔙 Back")
     await message.answer("Select a service:", reply_markup=markup)
 
 
 async def show_tasks(message: types.Message):
     text = (
-        "\ud83c\udfaf Available tasks:\n"
+        "🎯 Available tasks:\n"
         "1. Twitter subscription\n"
         "2. Retweet our post\n"
         "3. Telegram subscription\n"
@@ -53,7 +53,7 @@ async def show_tasks(message: types.Message):
         "Send a screenshot after completing the tasks."
     )
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    markup.row("\ud83d\udd19 Back")
+    markup.row("🔙 Back")
     await message.answer(text, reply_markup=markup)
     await TaskSubmission.waiting_for_screenshot.set()
 
@@ -66,7 +66,7 @@ async def back_to_menu(message: types.Message, state: FSMContext):
 
 async def create_meme(message: types.Message):
     await message.answer(
-        "Send 42 $KAFKA to 0xef43a15a02345553702c2ef7daa1883e86792f6c and share your idea in our group: https://t.me/+LK08slIhqj1iZTMy",
+        "Send 42 $KAFKA to `0xef43a15a02345553702c2ef7daa1883e86792f6c` and share your idea in our group: https://t.me/+LK08slIhqj1iZTMy",
         reply_markup=main_menu(),
     )
 
@@ -112,7 +112,7 @@ async def process_payment_purpose(message: types.Message, state: FSMContext):
     if config.LOG_CHAT_ID:
         await message.bot.send_message(int(config.LOG_CHAT_ID), log_text)
     await message.answer(
-        "Thanks! Kafka received your request. Stickers are coming \ud83d\udc3f\ufe0f",
+        "Thanks! Kafka received your request. Stickers are coming 🐿️",
         reply_markup=main_menu(),
     )
     await state.finish()
@@ -120,12 +120,12 @@ async def process_payment_purpose(message: types.Message, state: FSMContext):
 
 def register_user(dp: Dispatcher):
     dp.register_message_handler(start_command, commands=["start"], state="*")
-    dp.register_message_handler(buy_kafka, lambda m: m.text == "\ud83e\ude99 Buy $KAFKA", state="*")
-    dp.register_message_handler(show_services, lambda m: m.text == "\ud83c\udf81 Services", state="*")
-    dp.register_message_handler(show_tasks, lambda m: m.text == "\ud83d\udccb Tasks", state="*")
-    dp.register_message_handler(create_meme, lambda m: m.text == "\ud83c\udf9d Create Meme", state="*")
-    dp.register_message_handler(buy_sticker_start, lambda m: m.text == "\ud83d\udce6 Buy sticker pack", state="*")
-    dp.register_message_handler(back_to_menu, lambda m: m.text == "\ud83d\udd19 Back", state="*")
+    dp.register_message_handler(buy_kafka, lambda m: m.text == "🦙 Buy $KAFKA", state="*")
+    dp.register_message_handler(show_services, lambda m: m.text == "🎁 Services", state="*")
+    dp.register_message_handler(show_tasks, lambda m: m.text == "📋 Tasks", state="*")
+    dp.register_message_handler(create_meme, lambda m: m.text == "🎝 Create Meme", state="*")
+    dp.register_message_handler(buy_sticker_start, lambda m: m.text == "📦 Buy sticker pack", state="*")
+    dp.register_message_handler(back_to_menu, lambda m: m.text == "🔙 Back", state="*")
     dp.register_message_handler(process_task_screenshot, state=TaskSubmission.waiting_for_screenshot, content_types=ContentTypes.ANY)
     dp.register_message_handler(process_tx, state=StickerOrder.waiting_for_tx)
     dp.register_message_handler(process_username, state=StickerOrder.waiting_for_username)

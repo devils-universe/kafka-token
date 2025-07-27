@@ -1,11 +1,4 @@
-# $KAFKA — Token of Devils Universe
-
-Welcome to the official repository of the $KAFKA token — the native digital currency of the Devil's Universe project.
-
-## 🔥 Token Info
-- **Name**: Kafka
-- **Symbol**: $KAFKA
-- **Decimals**: 18
+@@ Welcome to the official repository of the $KAFKA token — the native digital cu
 - **Total Supply**: 1,000,000 $KAFKA
 - **Blockchain**: Binance Smart Chain (BEP-20)
 - **Contract Address**: `0x0023caf04B4fAc8B894Fc7fA49d38ddc4606a816`
