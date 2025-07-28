@@ -4,6 +4,7 @@ from telebot import types
 
 @bot.message_handler(func=lambda msg: msg.text == "🛒 Shoop")
 def handle_shoop(message):
+    """Обрабатывает кнопку Shoop и предлагает выбор между мемами и стикерами."""
     markup = types.InlineKeyboardMarkup()
     markup.add(types.InlineKeyboardButton("🎨 Create a Meme", url="https://devilsuniverse.com/#container04"))
     markup.add(types.InlineKeyboardButton("🛍 Open Sticker Store", callback_data="open_sticker_store"))
@@ -17,6 +18,7 @@ def handle_shoop(message):
 
 @bot.callback_query_handler(func=lambda call: call.data == "open_sticker_store")
 def handle_sticker_store(call):
+    """Отправляет примеры стикеров и объясняет как получить стикерпак."""
     sticker_ids = [
         "CAACAgIAAxkBAAIBuWiHKOetWo-SdCruW2yorH8Wi15nAAI8ewACL4IoSIc0a3D7YkOpNgQ",
         "CAACAgIAAxkBAAIBuGiHKNz3c9yTLXQ7lLYcBm7IkvZdAAILfQACTjAgSKxOMQABd531PTYE",
