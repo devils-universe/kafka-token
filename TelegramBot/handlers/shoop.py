@@ -1,11 +1,14 @@
 from bot import bot
 from telebot import types
 import requests
-
 import os
+
+from handlers.user_handlers import main_menu  # добавлено для возврата назад
+
+# Настройки
 BSC_SCAN_API_KEY = os.getenv("BSC_SCAN_API_KEY")
 EXPECTED_RECEIVER = "0xaa0de276f5e87730431a032ad335d21efd133fa9"
-EXPECTED_AMOUNT = 42 * 10**18  # 42 KAFKA (в wei)
+EXPECTED_AMOUNT = 42 * 10**18  # 42 KAFKA в wei
 EXPECTED_COMMENT_HEX = "0x737469636b657273"  # "stickers" в hex
 
 @bot.message_handler(func=lambda msg: msg.text == "🛒 Shoop")
@@ -32,14 +35,21 @@ def handle_sticker_store(call):
         "3. Press the button below to send your TX hash 🧾"
     )
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    markup.add(types.KeyboardButton("🧾 Send TX hash"))
+    markup.add(types.KeyboardButton("🧾 Send TX hash"), types.KeyboardButton("⬅️ Back"))
     bot.send_message(call.message.chat.id, msg, parse_mode="Markdown", reply_markup=markup)
     bot.answer_callback_query(call.id)
 
 @bot.message_handler(func=lambda msg: msg.text == "🧾 Send TX hash")
 def ask_tx_hash(message):
-    sent = bot.send_message(message.chat.id, "🔍 Please enter your transaction hash:")
-    bot.register_next_step_handler(sent, check_transaction)
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    markup.add(types.KeyboardButton("⬅️ Back"))
+    sent = bot.send_message(message.chat.id, "🔍 Please enter your transaction hash:", reply_markup=markup)
+    bot.register_next_step_handler(sent, handle_tx_or_back)
+
+def handle_tx_or_back(message):
+    if message.text == "⬅️ Back":
+        return main_menu(message)
+    return check_transaction(message)
 
 def check_transaction(message):
     tx_hash = message.text.strip()
@@ -57,24 +67,26 @@ def check_transaction(message):
         bot.send_message(message.chat.id, "❌ Transaction not found or still pending.")
         return
 
-    to_addr = result.get("to","").lower()
-    value = int(result.get("value","0x0"), 16)
-    input_data = result.get("input","").lower()
+    to_addr = result.get("to", "").lower()
+    value = int(result.get("value", "0x0"), 16)
+    input_data = result.get("input", "").lower()
 
     debug = (
         f"**DEBUG INFO**\n"
         f"- to: `{to_addr}`\n"
         f"- value: `{value}`\n"
-        f"- input begins with: `{input_data[:20]}`…"
+        f"- input begins with: `{input_data[:20]}…`"
     )
     bot.send_message(message.chat.id, debug, parse_mode="Markdown")
 
     if to_addr == EXPECTED_RECEIVER and value == EXPECTED_AMOUNT and EXPECTED_COMMENT_HEX in input_data:
-        bot.send_message(message.chat.id,
+        bot.send_message(
+            message.chat.id,
             "✅ Transaction confirmed!\nHere's your sticker pack:\nhttps://t.me/addstickers/KafkaLife2"
         )
     else:
-        bot.send_message(message.chat.id,
+        bot.send_message(
+            message.chat.id,
             "⚠️ Invalid transaction:\n"
             "- must send exactly 42 $KAFKA\n"
             "- to correct wallet\n"
