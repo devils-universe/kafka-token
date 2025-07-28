@@ -10,9 +10,9 @@ def handle_buy(message):
 
     # Первая строка — ссылки на биржи
     markup.row(
-        types.InlineKeyboardButton("🎲 $KAFKA on OKX", url="https://web3.okx.com/ru/token/bsc/0x0023caf04b4fac8b894fc7fa49d38ddc4606a816"),
-        types.InlineKeyboardButton("🥞 PancakeSwap", url="https://pancakeswap.finance/swap?outputCurrency=0x0023caf04b4fac8b894fc7fa49d38ddc4606a816&chain=bsc"),
-        types.InlineKeyboardButton("🌶 CoinPaprika", url="https://coinpaprika.com/coin/kafka-kafka/")
+        types.InlineKeyboardButton("🎲 OKX", url="https://web3.okx.com/ru/token/bsc/0x0023caf04b4fac8b894fc7fa49d38ddc4606a816"),
+        types.InlineKeyboardButton("🥞 Pancake", url="https://pancakeswap.finance/swap?outputCurrency=0x0023caf04b4fac8b894fc7fa49d38ddc4606a816&chain=bsc"),
+        types.InlineKeyboardButton("🌶 Paprika", url="https://coinpaprika.com/coin/kafka-kafka/")
     )
 
     # Вторая строка — действия
