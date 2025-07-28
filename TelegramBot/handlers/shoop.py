@@ -2,7 +2,8 @@ from bot import bot
 from telebot import types
 import requests
 
-BSC_SCAN_API_KEY = "H3S5XR457E15E3WFDQBMPQABBRQMMRVXKG"
+import os
+BSC_SCAN_API_KEY = os.getenv("BSC_SCAN_API_KEY")
 EXPECTED_RECEIVER = "0xaa0de276f5e87730431a032ad335d21efd133fa9"
 EXPECTED_AMOUNT = 42 * 10**18  # 42 KAFKA (в wei)
 EXPECTED_COMMENT_HEX = "0x737469636b657273"  # "stickers" в hex
