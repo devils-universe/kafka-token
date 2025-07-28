@@ -1,9 +1,7 @@
 from telebot import TeleBot, types
 
-# Создание экземпляра бота
-bot = TeleBot("YOUR_BOT_TOKEN")  # Замените на ваш токен
+bot = TeleBot("YOUR_BOT_TOKEN")  
 
-# Главное меню
 main_menu = types.ReplyKeyboardMarkup(resize_keyboard=True)
 main_menu.add(
     types.KeyboardButton("🪙 Buy $KAFKA"),
@@ -12,21 +10,18 @@ main_menu.add(
 )
 main_menu.add(
     types.KeyboardButton("🎁 Airdrop"),
-    types.KeyboardButton("🎖 Leaderboard"),
-    types.KeyboardButton("🎨 Custom Sticker")
+    types.KeyboardButton("📚 Support"),
+    types.KeyboardButton("💻 Web")
 )
 
-# Обработчик команды /start
 @bot.message_handler(commands=['start'])
 def send_start(message):
     start_markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     start_markup.add(types.KeyboardButton("Start"))
     bot.send_message(message.chat.id, "Hi! Start 🐿️", reply_markup=start_markup)
 
-# Обработчик нажатия кнопки "Start"
 @bot.message_handler(func=lambda msg: msg.text == "Start")
 def show_menu(message):
     bot.send_message(message.chat.id, "Choose one:", reply_markup=main_menu)
 
-# Запуск бота
 bot.polling(none_stop=True)
