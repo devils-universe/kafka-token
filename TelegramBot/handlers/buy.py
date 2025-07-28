@@ -8,8 +8,8 @@ def handle_buy(message):
     markup = types.InlineKeyboardMarkup()
     markup.add(types.InlineKeyboardButton("🔗 Buy $KAFKA", url="..."))
     markup.add(
-      types.InlineKeyboardButton("Earn / Get Kafka", callback_data="to_tasks"),
-      types.InlineKeyboardButton("Create (Spend) Kafka", callback_data="to_shoop")
+        types.InlineKeyboardButton("Earn / Get Kafka", callback_data="to_tasks"),
+        types.InlineKeyboardButton("Create (Spend) Kafka", callback_data="to_shoop")
     )
     bot.send_message(message.chat.id, "Choose:", reply_markup=markup)
 
