@@ -32,4 +32,8 @@ def show_menu(message):
         message.chat.id,
         "Выбери действие:",
         reply_markup=main_menu()
+        @bot.message_handler(content_types=["sticker"])
+def handle_sticker(message):
+    sticker_id = message.sticker.file_id
+    bot.send_message(message.chat.id, f"`{sticker_id}`", parse_mode="Markdown")
     )
