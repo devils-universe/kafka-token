@@ -1,18 +1,19 @@
 from telebot import types
 from bot import bot
 
-# Главное меню
-main_menu = types.ReplyKeyboardMarkup(resize_keyboard=True)
-main_menu.add(
-    types.KeyboardButton("🪙 Buy $KAFKA"),
-    types.KeyboardButton("📋 Tasks"),
-    types.KeyboardButton("🛒 Shoop")
-)
-main_menu.add(
-    types.KeyboardButton("🎁 Airdrop"),
-    types.KeyboardButton("🎖 Leaderboard"),
-    types.KeyboardButton("🎨 Custom Sticker")
-)
+def main_menu(message):
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    markup.add(
+        types.KeyboardButton("🪙 Buy $KAFKA"),
+        types.KeyboardButton("📋 Tasks"),
+        types.KeyboardButton("🛒 Shoop")
+    )
+    markup.add(
+        types.KeyboardButton("🎁 Airdrop"),
+        types.KeyboardButton("🎖 Leaderboard"),
+        types.KeyboardButton("🎨 Custom Sticker")
+    )
+    bot.send_message(message.chat.id, "Select action:", reply_markup=markup)
 
 @bot.message_handler(commands=["start"])
 def send_start(message):
@@ -22,4 +23,4 @@ def send_start(message):
 
 @bot.message_handler(func=lambda msg: msg.text == "Start")
 def show_menu(message):
-    bot.send_message(message.chat.id, "Select action:", reply_markup=main_menu)
+    main_menu(message)
