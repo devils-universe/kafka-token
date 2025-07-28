@@ -1,10 +1,7 @@
+from telebot import TeleBot
 import os
 from dotenv import load_dotenv
+
 load_dotenv()
-from telebot import TeleBot
-
-BOT_TOKEN = os.getenv("BOT_TOKEN")
-if not BOT_TOKEN:
-    raise RuntimeError("BOT_TOKEN is not set")
-
-bot = TeleBot(BOT_TOKEN)
+TOKEN = os.getenv("BOT_TOKEN")
+bot = TeleBot(TOKEN)
