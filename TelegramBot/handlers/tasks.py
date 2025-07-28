@@ -18,5 +18,5 @@ def handle_tasks(message):
         message.chat.id,
         text,
         parse_mode="Markdown",
-        reply_markup=main_menu()
+        reply_markup=main_menu
     )
