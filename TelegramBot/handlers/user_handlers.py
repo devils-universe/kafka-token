@@ -23,4 +23,8 @@ def send_start(message):
 
 @bot.message_handler(func=lambda msg: msg.text == "Start")
 def show_menu(message):
-    main_menu(message)  # 👈 обязательно вызываем функцию, а не передаём как объект
+    main_menu(message)  
+
+@bot.message_handler(func=lambda msg: msg.text == "⬅️ Back")
+def go_back(message):
+    main_menu(message)
