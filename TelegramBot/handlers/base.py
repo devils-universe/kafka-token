@@ -2,12 +2,17 @@ from telebot import types
 from bot import bot
 
 
-def main_menu():
-    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    markup.row(types.KeyboardButton("🪙 Buy $KAFKA"))
-    markup.row(types.KeyboardButton("📋 Tasks"), types.KeyboardButton("🛒 Shoop"))
-    return markup
-
+main_menu = types.ReplyKeyboardMarkup(resize_keyboard=True)
+main_menu.add(
+    types.KeyboardButton("🪙 Buy $KAFKA"),
+    types.KeyboardButton("📋 Tasks"),
+    types.KeyboardButton("🛒 Shoop")
+)
+main_menu.add(
+    types.KeyboardButton("🎁 Airdrop"),
+    types.KeyboardButton("🎖 Leaderboard"),
+    types.KeyboardButton("🎨 Custom Sticker")
+)
 
 @bot.message_handler(commands=['start'])
 def send_start(message):
