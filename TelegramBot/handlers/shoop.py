@@ -3,7 +3,7 @@ from telebot import types
 import requests
 import os
 
-from handlers.user_handlers import main_menu  # добавлено для возврата назад
+from handlers.user_handlers import main_menu  # для возврата назад
 
 # Настройки
 BSC_SCAN_API_KEY = os.getenv("BSC_SCAN_API_KEY")
@@ -45,6 +45,10 @@ def ask_tx_hash(message):
     markup.add(types.KeyboardButton("⬅️ Back"))
     sent = bot.send_message(message.chat.id, "🔍 Please enter your transaction hash:", reply_markup=markup)
     bot.register_next_step_handler(sent, handle_tx_or_back)
+
+@bot.message_handler(func=lambda msg: msg.text == "⬅️ Back")
+def go_back(message):
+    main_menu(message)
 
 def handle_tx_or_back(message):
     if message.text == "⬅️ Back":
