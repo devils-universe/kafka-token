@@ -1,7 +1,12 @@
 from bot import bot
 from telebot import types
-from handlers.tasks import handle_tasks
-import os
+from handlers.tasks import handle_tasks as imported_handle_tasks  
+
+def get_main_menu():
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    markup.add(types.KeyboardButton("📋 Tasks"))
+    markup.add(types.KeyboardButton("🪙 Buy $KAFKA"))
+    return markup
 
 @bot.message_handler(func=lambda msg: msg.text == "📋 Tasks")
 def handle_tasks(message):
@@ -18,5 +23,5 @@ def handle_tasks(message):
         message.chat.id,
         text,
         parse_mode="Markdown",
-        reply_markup=main_menu
+        reply_markup=get_main_menu()
     )
