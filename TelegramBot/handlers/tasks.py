@@ -1,7 +1,7 @@
 from bot import bot
 from telebot import types
-from handlers.user_handlers import main_menu
-
+import requests
+import os
 
 @bot.message_handler(func=lambda msg: msg.text == "📋 Tasks")
 def handle_tasks(message):
