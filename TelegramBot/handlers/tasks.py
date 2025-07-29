@@ -1,8 +1,22 @@
 from bot import bot
-from telebot import types 
+from telebot import types
+
+def get_main_menu():
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    markup.add(
+        types.KeyboardButton("📋 Tasks"),
+        types.KeyboardButton("🪙 Buy $KAFKA"),
+        types.KeyboardButton("🧠 Knowledge"),
+        types.KeyboardButton("🎮 Quests"),
+        types.KeyboardButton("📈 Stats"),
+        types.KeyboardButton("💬 Chat")
+    )
+    return markup
 
 @bot.message_handler(func=lambda msg: msg.text == "📋 Tasks")
 def handle_tasks(message):
+    text = (
+        "*📋 Task:*\n"
         "Create a meme story with Kafka, minimum *142 words*, and get *42 $KAFKA* 🐿️\n\n"
         "🔗 Share it in the chat: [Kafka Storage](https://t.me/+LK08slIhqj1iZTMy)\n"
         "✅ Make sure you're subscribed to the channels:\n"
