@@ -1,6 +1,5 @@
 from bot import bot
-from telebot import types
-from handlers.tasks import handle_tasks as imported_handle_tasks  
+from telebot import types 
 
 def get_main_menu():
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
