@@ -1,6 +1,6 @@
 from bot import bot
 from telebot import types
-import requests
+from handlers.tasks import handle_tasks
 import os
 
 @bot.message_handler(func=lambda msg: msg.text == "📋 Tasks")
