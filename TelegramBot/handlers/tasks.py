@@ -4,12 +4,14 @@ from telebot import types
 def get_main_menu():
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     markup.add(
-        types.KeyboardButton("📋 Tasks"),
         types.KeyboardButton("🪙 Buy $KAFKA"),
-        types.KeyboardButton("🧠 Knowledge"),
-        types.KeyboardButton("🎮 Quests"),
-        types.KeyboardButton("📈 Stats"),
-        types.KeyboardButton("💬 Chat")
+        types.KeyboardButton("📋 Tasks"),
+        types.KeyboardButton("🛒 Shoop")
+    )
+    markup.add(
+        types.KeyboardButton("🎁 Airdrop"),
+        types.KeyboardButton("🥭 Game"),
+        types.KeyboardButton("🌀 Web")
     )
     return markup
 
