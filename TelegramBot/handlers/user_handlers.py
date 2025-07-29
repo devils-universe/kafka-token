@@ -10,8 +10,8 @@ def main_menu(message):
     )
     markup.add(
         types.KeyboardButton("🎁 Airdrop"),
-        types.KeyboardButton("🎖 Leaderboard"),
-        types.KeyboardButton("🎨 Custom Sticker")
+        types.KeyboardButton("🥭 Game"),
+        types.KeyboardButton("🌀 Web")
     )
     bot.send_message(message.chat.id, "Select action:", reply_markup=markup)
 
