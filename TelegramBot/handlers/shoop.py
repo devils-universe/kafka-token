@@ -1,25 +1,56 @@
+# handlers/shoop.py
+
 from bot import bot
 from telebot import types
-import requests
-import os
 
-from handlers.user_handlers import main_menu  # для возврата назад
-
-# Настройки
-BSC_SCAN_API_KEY = os.getenv("BSC_SCAN_API_KEY")
-EXPECTED_RECEIVER = "0xaa0de276f5e87730431a032ad335d21efd133fa9"
-EXPECTED_AMOUNT = 42 * 10**18  # 42 KAFKA в wei
-EXPECTED_COMMENT_HEX = "0x737469636b657273"  # "stickers" в hex
-
+# --- SHOP ENTRY POINT ---
 @bot.message_handler(func=lambda msg: msg.text == "🛒 Shoop")
 def handle_shoop(message):
     markup = types.InlineKeyboardMarkup()
-    markup.add(types.InlineKeyboardButton("🎨 Create a Meme", url="https://devilsuniverse.com/#container04"))
-    markup.add(types.InlineKeyboardButton("🛍 Open Sticker Store", callback_data="open_sticker_store"))
-    bot.send_message(message.chat.id, "🎨 Want to create or receive Kafka-themed fun?\n\nChoose an option:", reply_markup=markup)
+    markup.add(
+        types.InlineKeyboardButton("🧱 Material", callback_data="shop_material"),
+        types.InlineKeyboardButton("🎭 KafkaFilters", callback_data="shop_kafkafilters")
+    )
+    bot.send_message(
+        message.chat.id,
+        "🛒 *Choose a category:*",
+        parse_mode="Markdown",
+        reply_markup=markup
+    )
 
-@bot.callback_query_handler(func=lambda call: call.data == "open_sticker_store")
-def handle_sticker_store(call):
+# --- RELIC: MATERIAL CATEGORY ---
+@bot.callback_query_handler(func=lambda call: call.data == "shop_material")
+def handle_shop_material(call):
+    text = (
+       🔥 First Relic:
+Relic #R001 — The Smoked Core
+A handcrafted bamboo bong engraved with the image of Kafka and the $K symbol.
+
+"🔥 *First Relic:*\n"
+"*Relic #R001 — The Smoked Core*\n"
+"A handcrafted bamboo bong engraved with the image of Kafka and the $K symbol.\n\n"
+"🧪 The engraving symbolizes:\n\n"
+"“A portal for cache input purification. Only the worthy may inhale through the Core.”\n\n"
+"💸 Engraving price: *420 $KAFKA*\n"
+"💰 Base item price: paid separately (fiat/crypto)\n\n"
+"❗️This artifact can be purchased *only with $KAFKA*.\n"
+"By purchasing it — you unlock the gateway to the Universe.\n\n"
+"🛒 *How to order:*\n"
+"1. Contact the artisan → 💬 *Message* (/button below)\n"
+"2. Describe what engraving you want and on what item\n"
+"3. Send *420 $KAFKA*\n"
+"4. Receive your tracking number and NFT (optional)"
+
+    )
+    markup = types.InlineKeyboardMarkup()
+    markup.add(types.InlineKeyboardButton("💬 Написать", url="https://t.me/devils_kafka"))
+    markup.add(types.InlineKeyboardButton("⬅️ Back to Shop", callback_data="back_to_shop"))
+    bot.send_message(call.message.chat.id, text, parse_mode="Markdown", reply_markup=markup)
+    bot.answer_callback_query(call.id)
+
+# --- KAFKA FILTERS CATEGORY ---
+@bot.callback_query_handler(func=lambda call: call.data == "shop_kafkafilters")
+def handle_shop_kafkafilters(call):
     sticker_ids = [
         "CAACAgIAAxkBAAIBuWiHKOetWo-SdCruW2yorH8Wi15nAAI8ewACL4IoSIc0a3D7YkOpNgQ",
         "CAACAgIAAxkBAAIBuGiHKNz3c9yTLXQ7lLYcBm7IkvZdAAILfQACTjAgSKxOMQABd531PTYE",
@@ -27,72 +58,22 @@ def handle_sticker_store(call):
     ]
     for sid in sticker_ids:
         bot.send_sticker(call.message.chat.id, sid)
+
     msg = (
-        "🎁 *To receive the full Kafka sticker pack:*\n"
-        "1. Send *42 $KAFKA* to wallet:\n"
-        "`0xaa0de276f5e87730431a032ad335d21efd133fa9`\n"
-        "2. In the transaction comment, write: `stickers`\n"
-        "3. Press the button below to send your TX hash 🧾"
+       "🏱 *To get the full Kafka sticker pack:*\n"
+"1. Send *42 $KAFKA* to the wallet:\n"
+"`0xaa0de276F5E87730431A032aD335D21EFd133Fa9`\n"
+"2. Add this comment: `stickers`\n"
+"3. Click below and send the TX hash to the creator"
     )
-    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    markup.add(types.KeyboardButton("🧾 Send TX hash"), types.KeyboardButton("⬅️ Back"))
+    markup = types.InlineKeyboardMarkup()
+    markup.add(types.InlineKeyboardButton("💬 Text me", url="https://t.me/devils_kafka"))
+    markup.add(types.InlineKeyboardButton("⬅️ Back to Shop", callback_data="back_to_shop"))
     bot.send_message(call.message.chat.id, msg, parse_mode="Markdown", reply_markup=markup)
     bot.answer_callback_query(call.id)
 
-@bot.message_handler(func=lambda msg: msg.text == "🧾 Send TX hash")
-def ask_tx_hash(message):
-    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    markup.add(types.KeyboardButton("⬅️ Back"))
-    sent = bot.send_message(message.chat.id, "🔍 Please enter your transaction hash:", reply_markup=markup)
-    bot.register_next_step_handler(sent, handle_tx_or_back)
-
-@bot.message_handler(func=lambda msg: msg.text == "⬅️ Back")
-def go_back(message):
-    main_menu(message)
-
-def handle_tx_or_back(message):
-    if message.text == "⬅️ Back":
-        return main_menu(message)
-    return check_transaction(message)
-
-def check_transaction(message):
-    tx_hash = message.text.strip()
-    bot.send_message(message.chat.id, f"ℹ️ Checking TX: `{tx_hash}`", parse_mode="Markdown")
-    url = f"https://api.bscscan.com/api?module=proxy&action=eth_getTransactionByHash&txhash={tx_hash}&apikey={BSC_SCAN_API_KEY}"
-    try:
-        resp = requests.get(url, timeout=10)
-        resp.raise_for_status()
-    except Exception as e:
-        bot.send_message(message.chat.id, "❌ Error contacting BscScan:\n" + str(e))
-        return
-
-    result = resp.json().get("result")
-    if not result:
-        bot.send_message(message.chat.id, "❌ Transaction not found or still pending.")
-        return
-
-    to_addr = result.get("to", "").lower()
-    value = int(result.get("value", "0x0"), 16)
-    input_data = result.get("input", "").lower()
-
-    debug = (
-        f"**DEBUG INFO**\n"
-        f"- to: `{to_addr}`\n"
-        f"- value: `{value}`\n"
-        f"- input begins with: `{input_data[:20]}…`"
-    )
-    bot.send_message(message.chat.id, debug, parse_mode="Markdown")
-
-    if to_addr == EXPECTED_RECEIVER and value == EXPECTED_AMOUNT and EXPECTED_COMMENT_HEX in input_data:
-        bot.send_message(
-            message.chat.id,
-            "✅ Transaction confirmed!\nHere's your sticker pack:\nhttps://t.me/addstickers/KafkaLife2"
-        )
-    else:
-        bot.send_message(
-            message.chat.id,
-            "⚠️ Invalid transaction:\n"
-            "- must send exactly 42 $KAFKA\n"
-            "- to correct wallet\n"
-            "- include `stickers` in comment"
-        )
+# --- BACK TO SHOP ---
+@bot.callback_query_handler(func=lambda call: call.data == "back_to_shop")
+def back_to_shop(call):
+    handle_shoop(call.message)
+    bot.answer_callback_query(call.id)
