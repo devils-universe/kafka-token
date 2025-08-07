@@ -8,7 +8,7 @@ from telebot import types
 def handle_shoop(message):
     markup = types.InlineKeyboardMarkup()
     markup.add(
-        types.InlineKeyboardButton("🧱 KafkaFilters", callback_data="shop_kafkafilters"),
+        types.InlineKeyboardButton("🪈 KafkaFilters", callback_data="shop_kafkafilters"),
         types.InlineKeyboardButton("🎭 KafkaStikers", callback_data="shop_kafkastikers")
     )
     bot.send_message(
