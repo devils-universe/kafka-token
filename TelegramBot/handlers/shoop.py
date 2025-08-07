@@ -8,8 +8,8 @@ from telebot import types
 def handle_shoop(message):
     markup = types.InlineKeyboardMarkup()
     markup.add(
-        types.InlineKeyboardButton("🧱 Material", callback_data="shop_material"),
-        types.InlineKeyboardButton("🎭 KafkaFilters", callback_data="shop_kafkafilters")
+        types.InlineKeyboardButton("🧱 KafkaFilters", callback_data="shop_kafkastikers"),
+        types.InlineKeyboardButton("🎭 KafkaStikers", callback_data="shop_kafkafilters")
     )
     bot.send_message(
         message.chat.id,
@@ -19,7 +19,7 @@ def handle_shoop(message):
     )
 
 # --- RELIC: MATERIAL CATEGORY ---
-@bot.callback_query_handler(func=lambda call: call.data == "shop_material")
+@bot.callback_query_handler(func=lambda call: call.data == "shop_kafkafilters")
 def handle_shop_material(call):
     text = (
         "🔥 *First Relic:*\n"
@@ -44,7 +44,7 @@ def handle_shop_material(call):
     bot.answer_callback_query(call.id)
 
 # --- KAFKA FILTERS CATEGORY ---
-@bot.callback_query_handler(func=lambda call: call.data == "shop_kafkafilters")
+@bot.callback_query_handler(func=lambda call: call.data == "shop_kafkastikers")
 def handle_shop_kafkafilters(call):
     sticker_ids = [
         "CAACAgIAAxkBAAIBuWiHKOetWo-SdCruW2yorH8Wi15nAAI8ewACL4IoSIc0a3D7YkOpNgQ",
