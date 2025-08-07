@@ -57,7 +57,7 @@ def handle_shop_kafkafilters(call):
     msg = (
         "🏱 *To get the full Kafka sticker pack:*\n"
         "1. Send *42 $KAFKA* to the wallet:\n"
-        "[0xaa0de276F5E87730431A032aD335D21EFd133Fa9](https://bscscan.com/address/0xaa0de276F5E87730431A032aD335D21EFd133Fa9)\n"
+        "[0xaa0de276F5E87730431A032aD335D21EFd133Fa9](0xaa0de276F5E87730431A032aD335D21EFd133Fa9)\n"
         "2. Add this comment: `stickers`\n"
         "3. Click below and send the TX hash to the creator"
     )
