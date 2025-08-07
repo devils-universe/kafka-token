@@ -8,8 +8,8 @@ from telebot import types
 def handle_shoop(message):
     markup = types.InlineKeyboardMarkup()
     markup.add(
-        types.InlineKeyboardButton("🧱 KafkaFilters", callback_data="shop_kafkastikers"),
-        types.InlineKeyboardButton("🎭 KafkaStikers", callback_data="shop_kafkafilters")
+        types.InlineKeyboardButton("🧱 KafkaFilters", callback_data="shop_kafkafilters"),
+        types.InlineKeyboardButton("🎭 KafkaStikers", callback_data="shop_kafkastikers")
     )
     bot.send_message(
         message.chat.id,
@@ -18,7 +18,7 @@ def handle_shoop(message):
         reply_markup=markup
     )
 
-# --- RELIC: MATERIAL CATEGORY ---
+# --- RELIC: Filters CATEGORY ---
 @bot.callback_query_handler(func=lambda call: call.data == "shop_kafkafilters")
 def handle_shop_material(call):
     text = (
@@ -43,7 +43,7 @@ def handle_shop_material(call):
     bot.send_message(call.message.chat.id, text, parse_mode="Markdown", reply_markup=markup)
     bot.answer_callback_query(call.id)
 
-# --- KAFKA FILTERS CATEGORY ---
+# --- KAFKA STIKERS CATEGORY ---
 @bot.callback_query_handler(func=lambda call: call.data == "shop_kafkastikers")
 def handle_shop_kafkafilters(call):
     sticker_ids = [
@@ -57,7 +57,7 @@ def handle_shop_kafkafilters(call):
     msg = (
         "🏱 *To get the full Kafka sticker pack:*\n"
         "1. Send *42 $KAFKA* to the wallet:\n"
-        "`0xaa0de276F5E87730431A032aD335D21EFd133Fa9`\n"
+        "[`0xaa0de276F5E87730431A032aD335D21EFd133Fa9`]\n"
         "2. Add this comment: `stickers`\n"
         "3. Click below and send the TX hash to the creator"
     )
