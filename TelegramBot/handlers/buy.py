@@ -17,7 +17,7 @@ def build_buy_markup() -> types.InlineKeyboardMarkup:
     kb.row(
         types.InlineKeyboardButton("📈 GeckoTerminal", url="https://www.geckoterminal.com/bsc/tokens/0x0023caf04b4fac8b894fc7fa49d38ddc4606a816"),
         types.InlineKeyboardButton("🔎 BscScan", url="https://bscscan.com/token/0x0023caf04B4fAc8B894Fc7fA49d38ddc4606a816"),
-        types.InlineKeyboardButton("🌐 Website", url=SITE)
+        types.InlineKeyboardButton("📢 Support", url="https://t.me/devils_kafka")  
     )
     # Row 3 — Utilities
     kb.row(
