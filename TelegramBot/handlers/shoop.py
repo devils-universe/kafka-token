@@ -28,7 +28,7 @@ RELIC_R001_CAPTION = (
     "✨ *Inscription meaning:*\n"
     "“A portal for cache input purification. Only the worthy may inhale through the Core.”\n\n"
     "💰 *Payment address:*\n"
-    f"`{PAYMENT_ADDRESS}`"`"
+    f"`{PAYMENT_ADDRESS}`"
 )
 
 def _relic_keyboard() -> types.InlineKeyboardMarkup:
@@ -101,7 +101,7 @@ def handle_shop_kafkafilters(call):
     "2️⃣ *Send* **420 $KAFKA** to the payment address below.\n"
     "3️⃣ *Reply with the TX hash* — you’ll receive your tracking number and an optional NFT duplicate.\n\n"
     "💰 *Payment address:*\n"
-    f"`{PAYMENT_ADDRESS}`"`"
+    f"`{PAYMENT_ADDRESS}`"
     )
     bot.send_message(chat_id, cta, parse_mode="Markdown", reply_markup=_relic_keyboard())
     bot.answer_callback_query(call.id)
