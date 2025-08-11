@@ -13,7 +13,7 @@ def handle_shoop(message):
     )
     bot.send_message(
         message.chat.id,
-        "🛒 *Choose a category:*",
+        "🛒 *Get something:*",
         parse_mode="Markdown",
         reply_markup=markup
     )
@@ -32,8 +32,8 @@ def handle_shop_material(call):
         "❗️This artifact can be purchased *only with $KAFKA*.\n"
         "By purchasing it — you unlock the gateway to the Universe.\n\n"
         "🛒 *How to order:*\n"
-        "1. Contact the artisan → 💬 *Message* (/button below)\n"
-        "2. Describe what engraving you want and on what item\n"
+        "1. Contact the artisan → 💬 *Message* \n"
+        "2. Describe any wishes of item\n"
         "3. Send *420 $KAFKA*\n"
         "4. Receive your tracking number and NFT (optional)"
     )
@@ -55,7 +55,7 @@ def handle_shop_kafkafilters(call):
         bot.send_sticker(call.message.chat.id, sid)
 
     msg = (
-        "🏱 *To get the full Kafka sticker pack:*\n"
+        "🎭 *To get the full Kafka sticker pack:*\n"
         "1. Send *42 $KAFKA* to the wallet:\n"
         "0xaa0de276F5E87730431A032aD335D21EFd133Fa9\n"
         "2. Add this comment: `stickers`\n"
