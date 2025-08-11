@@ -11,9 +11,9 @@ PAYMENT_ADDRESS = "0xaa0de276F5E87730431A032aD335D21EFd133Fa9"
 
 # Put your images in the project root's "assets/" (not inside the Telegram bot folder)
 RELIC_R001_PHOTOS = [
-    "assets/du_shop_final_01_square.jpg",  
-    "assets/du_shop_final_02_square.jpg",    
-    "assets/du_shop_final_03_square.jpg",  
+    "assets/shoop/du_shop_final_01_square.jpg",  
+    "assets/shoop/du_shop_final_02_square.jpg",    
+    "assets/shoopdu_shop_final_03_square.jpg",  
 ]
 # Tip: leave only 2–3 items above. Non‑existent files will be skipped safely.
 
