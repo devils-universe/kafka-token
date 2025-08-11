@@ -17,7 +17,7 @@ def build_buy_markup() -> types.InlineKeyboardMarkup:
     kb.row(
         types.InlineKeyboardButton("📈 GeckoTerminal", url="https://www.geckoterminal.com/bsc/tokens/0x0023caf04b4fac8b894fc7fa49d38ddc4606a816"),
         types.InlineKeyboardButton("🔎 BscScan", url="https://bscscan.com/token/0x0023caf04B4fAc8B894Fc7fA49d38ddc4606a816"),
-        types.InlineKeyboardButton("📢 Support", url="https://t.me/devils_kafka")  
+        types.InlineKeyboardButton("📢 Support", url="https://t.me/devils_kafka")
     )
     # Row 3 — Utilities
     kb.row(
@@ -30,10 +30,10 @@ def buy_main_text() -> str:
     return (
         "🪙 *Buy $KAFKA*\n"
         "_BEP-20 on BNB Smart Chain_\n\n"
-        "• *Contract:* `"+CONTRACT+"`\n"
+        f"• *Contract:* `{CONTRACT}`\n"
         "• Decimals: `18`\n"
-        "• Slippage: обычно `0.5–1%`\n\n"
-        "👉 Выбирай площадку ниже, а если впервые — жми *How to buy*."
+        "• Slippage: typically `0.5–1%`\n\n"
+        "👉 Choose a platform below. If it's your first time — tap *How to buy*."
     )
 
 @bot.message_handler(func=lambda msg: msg.text == "🪙 Buy $KAFKA")
@@ -48,11 +48,11 @@ def handle_buy(message):
 
 @bot.callback_query_handler(func=lambda c: c.data == "buy_copy_ca")
 def cb_buy_copy_ca(call):
-    # Отдельным сообщением — удобно выделить и скопировать
+    # Send separately — easy to highlight and copy
     bot.answer_callback_query(call.id, "Contract address sent.")
     bot.send_message(
         call.message.chat.id,
-        "🔗 *$KAFKA Contract (BSC):*\n`"+CONTRACT+"`",
+        f"🔗 *$KAFKA Contract (BSC):*\n`{CONTRACT}`",
         parse_mode="Markdown",
         disable_web_page_preview=True
     )
@@ -61,13 +61,13 @@ def cb_buy_copy_ca(call):
 def cb_buy_howto(call):
     text = (
         "❓ *How to buy $KAFKA*\n\n"
-        "1) *Кошелёк*: MetaMask/OKX Wallet. Сеть — *BNB Smart Chain* (BSC).\n"
-        "2) *Пополнить BNB* для газа.\n"
-        "3) *Импорт токена*: добавь контракт:\n"
-        "`"+CONTRACT+"`\n"
-        "4) *Swap на Pancake/OKX*: выбери $KAFKA по контракту.\n"
-        "5) *Slippage*: начни с 0.5–1%. Если ордер не проходит — чуть увеличь.\n\n"
-        "💡 *Безопасность*: проверяй адрес контракта, не кликай незнакомые ссылки."
+        "1) *Wallet*: MetaMask or OKX Wallet. Network — *BNB Smart Chain (BSC)*.\n"
+        "2) *Fund BNB* for gas.\n"
+        "3) *Import token*: add the contract:\n"
+        f"`{CONTRACT}`\n"
+        "4) *Swap on Pancake/OKX*: select $KAFKA by contract address.\n"
+        "5) *Slippage*: start with 0.5–1%. If the swap fails — increase a bit.\n\n"
+        "💡 *Safety*: verify the contract address and avoid unknown links."
     )
     kb = types.InlineKeyboardMarkup()
     kb.row(
@@ -77,7 +77,7 @@ def cb_buy_howto(call):
         types.InlineKeyboardButton("⬅️ Back", callback_data="buy_back"),
         types.InlineKeyboardButton("📋 Copy CA", callback_data="buy_copy_ca")
     )
-    # красиво — меняем текущее сообщение, не засоряя чат
+    # Nicer UX — edit the current message instead of spamming the chat
     bot.edit_message_text(
         chat_id=call.message.chat.id,
         message_id=call.message.message_id,
