@@ -13,18 +13,22 @@ PAYMENT_ADDRESS = "0xaa0de276F5E87730431A032aD335D21EFd133Fa9"
 RELIC_R001_PHOTOS = [
     "assets/shoop/du_shop_final_01_square.jpg",  
     "assets/shoop/du_shop_final_02_square.jpg",    
-    "assets/shoopdu_shop_final_03_square.jpg",  
+    "assets/shoop/du_shop_final_03_square.jpg",  
 ]
 # Tip: leave only 2–3 items above. Non‑existent files will be skipped safely.
 
 RELIC_R001_CAPTION = (
-    "*Relic #R001 — The Smoked Core*\n"
-    "Handcrafted bamboo bong engraved with Kafka and the $KAFKA symbol.\n\n"
+    "🌌 *Relic #R001 — The Smoked Core*\n\n"
+    "🪵 *Handcrafted bamboo bong* with deep-engraved imagery of *Kafka* and the *$KAFKA* symbol.\n"
+    "Each piece is made individually, ensuring no two artifacts are the same.\n\n"
+    "💎 *Details:*\n"
     "— Engraving price: *420 $KAFKA*\n"
-    "— Base item (bamboo bong): paid separately (fiat/crypto)\n"
-    "— On‑chain proof + optional NFT duplicate\n\n"
+    "— Base item (bamboo bong): paid separately *(fiat/crypto)*\n"
+    "— On-chain proof of ownership + optional NFT duplicate\n\n"
+    "✨ *Inscription meaning:*\n"
     "“A portal for cache input purification. Only the worthy may inhale through the Core.”\n\n"
-    "*Payment address:* `"+ PAYMENT_ADDRESS +"`"
+    "💰 *Payment address:*\n"
+    f"`{PAYMENT_ADDRESS}`"`"
 )
 
 def _relic_keyboard() -> types.InlineKeyboardMarkup:
@@ -92,11 +96,12 @@ def handle_shop_kafkafilters(call):
 
     # 2) CTA message with buttons
     cta = (
-        "🛒 *How to order*\n"
-        "1) Message the artisan and describe your wishes\n"
-        "2) Send *420 $KAFKA* to the address below\n"
-        "3) Reply with the TX hash — you’ll receive tracking and (optional) NFT\n\n"
-        "*Payment address:* `"+ PAYMENT_ADDRESS +"`"
+        "🛒 *How to Order*\n\n"
+    "1️⃣ *Contact the artisan* — describe any customization or special wishes.\n"
+    "2️⃣ *Send* **420 $KAFKA** to the payment address below.\n"
+    "3️⃣ *Reply with the TX hash* — you’ll receive your tracking number and an optional NFT duplicate.\n\n"
+    "💰 *Payment address:*\n"
+    f"`{PAYMENT_ADDRESS}`"`"
     )
     bot.send_message(chat_id, cta, parse_mode="Markdown", reply_markup=_relic_keyboard())
     bot.answer_callback_query(call.id)
@@ -116,10 +121,10 @@ def handle_shop_kafkastikers(call):
 
     msg = (
         "🎭 *To get the full Kafka sticker pack:*\n"
-        "1) Send *42 $KAFKA* to the wallet:\n"
+        "1️⃣ Send *42 $KAFKA* to the wallet:\n"
         f"{PAYMENT_ADDRESS}\n"
-        "2) Add this comment: `stickers`\n"
-        "3) Click below and send the TX hash to the creator"
+        "2️⃣ Add this comment: `stickers`\n"
+        "3️⃣ Click below and send the TX hash to the creator"
     )
     markup = types.InlineKeyboardMarkup()
     markup.add(types.InlineKeyboardButton("💬 Text me", url="https://t.me/devils_kafka"))
