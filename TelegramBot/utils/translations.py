@@ -28,6 +28,9 @@ TRANSLATIONS = {
         "stub_aird":  "Opening: Airdrop",
         "stub_game":  "Opening: Game",
         "stub_web":   "Opening: Web",
+
+        "opening_airdrop": "Opening: Airdrop",
+        "coming_soon": "Coming soon!",
     },
     "ru": {
         # базовые
@@ -57,5 +60,8 @@ TRANSLATIONS = {
         "stub_aird":  "Открываю: Аирдроп",
         "stub_game":  "Открываю: Игра",
         "stub_web":   "Открываю: Веб",
+
+        "opening_airdrop": "Открываю: Аирдроп",
+        "coming_soon": "Скоро!",
     },
 }
