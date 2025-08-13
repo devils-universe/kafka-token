@@ -11,15 +11,28 @@ def airdrop_main_text(uid) -> str:
 
 def airdrop_main_markup(uid):
     kb = types.InlineKeyboardMarkup()
-    kb.row(types.InlineKeyboardButton(t(uid, "follow_us"))
-    
+    kb.row(types.InlineKeyboardButton(t(uid, "follow_us"), callback_data="airdrop_follow_us"))
+    return kb
 
+# reply-кнопка
 @bot.message_handler(func=lambda m: m.text in {"🎁 Airdrop", "🎁 Аирдроп"})
 def handle_airdrop(message):
     uid = message.from_user.id
     bot.send_message(
         message.chat.id,
         airdrop_main_text(uid),
+        parse_mode="Markdown",
+        disable_web_page_preview=True,
+        reply_markup=airdrop_main_markup(uid)
+    )
+
+# вход через inline-роутер
+def open(call):
+    uid = call.from_user.id
+    bot.edit_message_text(
+        chat_id=call.message.chat.id,
+        message_id=call.message.message_id,
+        text=airdrop_main_text(uid),
         parse_mode="Markdown",
         disable_web_page_preview=True,
         reply_markup=airdrop_main_markup(uid)
@@ -34,4 +47,12 @@ def cb_airdrop_follow_us(call):
         "• [X](https://x.com/devils_kafka)\n"
         "• [Facebook](https://www.facebook.com/devilsuniversecom)"
     )
-   
+    bot.edit_message_text(
+        chat_id=call.message.chat.id,
+        message_id=call.message.message_id,
+        text=text,
+        parse_mode="Markdown",
+        disable_web_page_preview=True
+    )
+    bot.answer_callback_query(call.id)
+    
