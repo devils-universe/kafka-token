@@ -7,7 +7,8 @@ import handlers.airdrop
 import handlers.game
 import handlers.web
 
-from handlers_buy_ru import *      
+# 👇 Импорты русских хэндлеров
+from handlers.buy_ru import *               
 from handlers.base_ru_patch import *        
 
 if __name__ == "__main__":
