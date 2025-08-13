@@ -6,7 +6,7 @@ BTN_EN = "🎁 Airdrop"   # старое имя кнопки (англ)
 
 def open_airdrop(message):
     uid = message.from_user.id
-    bot.send_message(message.chat.id, f"{t(uid,'🎁 Airdrop')")
+    bot.send_message(message.chat.id, f"{t(uid,'🎁 Airdrop')"}
 
 # Старый обработчик — оставляем для англоязычного текста кнопки
 @bot.message_handler(func=lambda m: m.text == BTN_EN)
