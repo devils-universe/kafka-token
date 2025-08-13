@@ -20,7 +20,7 @@ def tasks_main_text():
     return (
         "*📋 Task:*\n"
         "Create a meme story with Kafka, minimum *142 words*, and get *42 $KAFKA* 🐿️\n"
-        "+ минимум 2 NFT-иллюстрации к сюжету\n\n"
+        "+ minimum 2 NFT illustrations for the plot\n\n"
         "🔗 Share it in the chat: [Kafka Storage](https://t.me/+LK08slIhqj1iZTMy)\n"
         "✅ Make sure you're subscribed to the channels:\n"
         "• [DevilsUniverse EN](https://t.me/devilsuniversecom)\n"
