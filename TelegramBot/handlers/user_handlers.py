@@ -1,23 +1,30 @@
+# TelegramBot/handlers/user_handlers.py
 from telebot import types
 from bot import bot
 from utils.language import t, set_lang, get_lang
+from utils.translations import TRANSLATIONS  # чтобы получать тексты на обоих языках
 
-# Экшен‑кнопки оставляем как в старом коде, чтобы не ломать другие хендлеры
-BTN_BUY   = "🪙 Buy $KAFKA"
-BTN_TASKS = "📋 Tasks"
-BTN_SHOOP = "🛒 Shoop"
-BTN_AIRD  = "🎁 Airdrop"
-BTN_GAME  = "🥭 Game"
-BTN_WEB   = "🌀 Web"
+# Ключи кнопок главного меню (логические)
+MENU_KEYS = ["menu_buy", "menu_tasks", "menu_shop", "menu_aird", "menu_game", "menu_web"]
+
+def label(lang: str, key: str) -> str:
+    """Вернёт надпись для кнопки key на языке lang."""
+    return TRANSLATIONS[lang].get(key, key)
 
 def build_main_menu(user_id: int) -> types.ReplyKeyboardMarkup:
+    lang = get_lang(user_id)
     kb = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    kb.add(types.KeyboardButton(BTN_BUY),
-           types.KeyboardButton(BTN_TASKS),
-           types.KeyboardButton(BTN_SHOOP))
-    kb.add(types.KeyboardButton(BTN_AIRD),
-           types.KeyboardButton(BTN_GAME),
-           types.KeyboardButton(BTN_WEB))
+
+    kb.add(
+        types.KeyboardButton(label(lang, "menu_buy")),
+        types.KeyboardButton(label(lang, "menu_tasks")),
+        types.KeyboardButton(label(lang, "menu_shop")),
+    )
+    kb.add(
+        types.KeyboardButton(label(lang, "menu_aird")),
+        types.KeyboardButton(label(lang, "menu_game")),
+        types.KeyboardButton(label(lang, "menu_web")),
+    )
     # Кнопка выбора языка
     kb.add(types.KeyboardButton(t(user_id, "language")))
     return kb
@@ -34,7 +41,6 @@ def on_start(message):
     uid = message.from_user.id
     start_kb = types.ReplyKeyboardMarkup(resize_keyboard=True)
     start_kb.add(types.KeyboardButton(t(uid, "start_btn")))
-    # Можно сразу показать и кнопку языка (на случай, если юзеру нужен RU до старта)
     start_kb.add(types.KeyboardButton(t(uid, "language")))
     bot.send_message(message.chat.id, t(uid, "start_prompt"), reply_markup=start_kb)
 
@@ -63,3 +69,44 @@ def on_language_choice(message):
 def on_back(message):
     uid = message.from_user.id
     bot.send_message(message.chat.id, t(uid, "menu_title"), reply_markup=build_main_menu(uid))
+
+# === ВАЖНО: перехватываем ТОЛЬКО русские названия разделов, чтобы не бить старые англ. хендлеры ===
+RU_MENU_LABELS = {
+    "menu_buy":   label("ru", "menu_buy"),
+    "menu_tasks": label("ru", "menu_tasks"),
+    "menu_shop":  label("ru", "menu_shop"),
+    "menu_aird":  label("ru", "menu_aird"),
+    "menu_game":  label("ru", "menu_game"),
+    "menu_web":   label("ru", "menu_web"),
+}
+RU_LABEL_SET = set(RU_MENU_LABELS.values())
+
+@bot.message_handler(func=lambda m: m.text in RU_LABEL_SET)
+def on_ru_menu_click(message):
+    """Когда интерфейс на русском — сюда прилетают клики по русским кнопкам меню.
+    На этом шаге даём аккуратные заглушки. На следующем — подвяжем реальные вызовы.
+    """
+    uid = message.from_user.id
+    txt = message.text
+
+    # Определим, какую кнопку нажали
+    clicked_key = None
+    for k, v in RU_MENU_LABELS.items():
+        if v == txt:
+            clicked_key = k
+            break
+
+    if not clicked_key:
+        return
+
+    # Заглушки (переводимые тексты)
+    stub_key = {
+        "menu_buy":   "stub_buy",
+        "menu_tasks": "stub_tasks",
+        "menu_shop":  "stub_shop",
+        "menu_aird":  "stub_aird",
+        "menu_game":  "stub_game",
+        "menu_web":   "stub_web",
+    }[clicked_key]
+
+    bot.send_message(message.chat.id, t(uid, stub_key))
