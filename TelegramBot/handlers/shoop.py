@@ -15,22 +15,41 @@ RELIC_R001_PHOTOS = [
 
 def _relic_keyboard(uid) -> types.InlineKeyboardMarkup:
     kb = types.InlineKeyboardMarkup()
-    # Contact artisan and share address buttons
     kb.add(types.InlineKeyboardButton(t(uid, "message_artisan"), url="https://t.me/devils_kafka"))
     share_text = t(uid, "share_text")
     encoded_text = urllib.parse.quote(share_text, safe='')
-    kb.add(types.InlineKeyboardButton(t(uid, "share_payment"),
-           url=f"https://t.me/share/url?url={PAYMENT_ADDRESS}&text={encoded_text}"))
-    # Back to Shop button
+    kb.add(types.InlineKeyboardButton(
+        t(uid, "share_payment"),
+        url=f"https://t.me/share/url?url={PAYMENT_ADDRESS}&text={encoded_text}"
+    ))
     kb.add(types.InlineKeyboardButton(t(uid, "back_shop"), callback_data="back_to_shop"))
     return kb
 
-# SHOP ENTRY
+# ---- helper: edit if possible, else send new ----
+def _safe_edit_or_send(call, text, reply_markup=None):
+    try:
+        bot.edit_message_text(
+            chat_id=call.message.chat.id,
+            message_id=call.message.message_id,
+            text=text,
+            parse_mode="Markdown",
+            disable_web_page_preview=True,
+            reply_markup=reply_markup
+        )
+    except Exception:
+        bot.send_message(
+            call.message.chat.id,
+            text,
+            parse_mode="Markdown",
+            disable_web_page_preview=True,
+            reply_markup=reply_markup
+        )
+
+# SHOP ENTRY (reply-кнопки EN/RU)
 @bot.message_handler(func=lambda msg: msg.text in {"🛒 Shoop", "🛒 Магазин"})
 def handle_shoop(message):
     uid = message.from_user.id
     markup = types.InlineKeyboardMarkup()
-    # Fixed label typo: 'KafkaStikers' -> 'KafkaStickers'
     markup.add(
         types.InlineKeyboardButton("🪈 KafkaFilters", callback_data="shop_kafkafilters"),
         types.InlineKeyboardButton("🎭 KafkaStickers", callback_data="shop_kafkastickers")
@@ -42,13 +61,22 @@ def handle_shoop(message):
         reply_markup=markup
     )
 
+# ВХОД из русского инлайн‑меню (callback_data="open_shoop")
+def open(call):
+    uid = call.from_user.id
+    menu = types.InlineKeyboardMarkup()
+    menu.add(
+        types.InlineKeyboardButton("🪈 KafkaFilters", callback_data="shop_kafkafilters"),
+        types.InlineKeyboardButton("🎭 KafkaStickers", callback_data="shop_kafkastickers")
+    )
+    _safe_edit_or_send(call, t(uid, 'shop_main'), menu)
+
 # RELIC: KafkaFilters
 @bot.callback_query_handler(func=lambda call: call.data == "shop_kafkafilters")
 def handle_shop_kafkafilters(call):
     uid = call.from_user.id
     chat_id = call.message.chat.id
 
-    # 1) Send media group (caption only on the first item)
     media = []
     open_files = []
     caption_text = t(uid, 'relic_caption').format(address=PAYMENT_ADDRESS)
@@ -73,7 +101,6 @@ def handle_shop_kafkafilters(call):
                 except Exception:
                     pass
 
-    # 2) Send CTA message with buttons
     cta_text = t(uid, 'relic_order').format(address=PAYMENT_ADDRESS)
     bot.send_message(chat_id, cta_text, parse_mode="Markdown", reply_markup=_relic_keyboard(uid))
     bot.answer_callback_query(call.id)
@@ -101,11 +128,11 @@ def handle_shop_kafkastickers(call):
 @bot.callback_query_handler(func=lambda call: call.data == "back_to_shop")
 def back_to_shop(call):
     uid = call.from_user.id
-    # Return to shop menu (send a new message with main shop options)
-    markup = types.InlineKeyboardMarkup()
-    markup.add(
+    menu = types.InlineKeyboardMarkup()
+    menu.add(
         types.InlineKeyboardButton("🪈 KafkaFilters", callback_data="shop_kafkafilters"),
         types.InlineKeyboardButton("🎭 KafkaStickers", callback_data="shop_kafkastickers")
     )
-    bot.send_message(call.message.chat.id, t(uid, 'shop_main'), parse_mode="Markdown", reply_markup=markup)
+    _safe_edit_or_send(call, t(uid, 'shop_main'), menu)
     bot.answer_callback_query(call.id)
+    
