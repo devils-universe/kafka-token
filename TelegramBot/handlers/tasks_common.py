@@ -1,6 +1,8 @@
+# handlers/tasks_common.py
 from bot import bot
 
 def safe_edit_or_send(call, text, reply_markup=None):
+    """Try to edit the triggering message; fallback to sending a new one."""
     try:
         bot.edit_message_text(
             chat_id=call.message.chat.id,
