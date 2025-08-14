@@ -28,8 +28,8 @@ BTN_SHARE_PAYMENT_EN = "📤 Share payment address"
 BTN_BACK_SHOP_EN = "⬅️ Back to shop"
 
 STICKER_INFO_EN = (
-    "Full sticker pack — coming soon.\n"
-    "For a custom one — DM me.\n\n"
+    "Full sticker pack from creator.\n"
+    "For full pack — DM me.\n\n"
     "💳 Payment: `{address}`"
 )
 BTN_TEXT_ME_EN = "✍️ Text me"
