@@ -1,6 +1,6 @@
-# handlers/buy.py
 from bot import bot
 from telebot import types
+from utils.language import t
 
 CONTRACT = "0x0023caf04B4fAc8B894Fc7fA49d38ddc4606a816"
 SITE = "https://devilsuniverse.com"
@@ -48,8 +48,8 @@ def handle_buy(message):
 
 @bot.callback_query_handler(func=lambda c: c.data == "buy_copy_ca")
 def cb_buy_copy_ca(call):
-    # Send separately — easy to highlight and copy
-    bot.answer_callback_query(call.id, "Contract address sent.")
+    uid = call.from_user.id
+    bot.answer_callback_query(call.id, t(uid, "contract_sent"))
     bot.send_message(
         call.message.chat.id,
         f"🔗 *$KAFKA Contract (BSC):*\n`{CONTRACT}`",
@@ -77,7 +77,7 @@ def cb_buy_howto(call):
         types.InlineKeyboardButton("⬅️ Back", callback_data="buy_back"),
         types.InlineKeyboardButton("📋 Copy CA", callback_data="buy_copy_ca")
     )
-    # Nicer UX — edit the current message instead of spamming the chat
+    # Edit the current message instead of sending a new one
     bot.edit_message_text(
         chat_id=call.message.chat.id,
         message_id=call.message.message_id,
