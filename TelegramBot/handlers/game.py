@@ -6,9 +6,9 @@ def game_main_text(uid) -> str:
     return f"🥭 {t(uid, 'coming_soon')}"
 
 def game_main_markup(uid):
-    return types.InlineKeyboardMarkup()  # без кнопки «назад», как просил
+    return types.InlineKeyboardMarkup()
 
-# reply-кнопки EN/RU
+# Вход через reply-кнопку (англ/рус)
 @bot.message_handler(func=lambda m: m.text in {"🥭 Game", "🎮 Игра"})
 def handle_game(message):
     uid = message.from_user.id
@@ -20,7 +20,7 @@ def handle_game(message):
         reply_markup=game_main_markup(uid)
     )
 
-# вход из русского инлайн‑меню (callback_data="open_game")
+# Вход из инлайн-меню (callback_data="open_game")
 def open(call):
     uid = call.from_user.id
     bot.edit_message_text(
