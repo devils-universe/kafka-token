@@ -1,10 +1,8 @@
 from bot import bot
 from telebot import types
 import logging
-from utils.language import t, get_lang
 
 CONTRACT = "0x0023caf04B4fAc8B894Fc7fA49d38ddc4606a816"
-SITE = "https://devilsuniverse.com"
 
 def buy_main_text_ru() -> str:
     return (
@@ -64,49 +62,44 @@ def handle_buy_ru_message(message):
         reply_markup=build_buy_markup_ru()
     )
 
-@bot.callback_query_handler(func=lambda c: isinstance(getattr(c, "data", None), str) \
+@bot.callback_query_handler(func=lambda c: isinstance(getattr(c, "data", None), str)
                                        and (c.data == "open_buy" or c.data.startswith("buy_")))
-def cb_buy_router(call):
-    # Ensure this handler only processes Russian buy callbacks
+def cb_buy_ru(call):
+    from utils.language import t, get_lang
     if get_lang(call.from_user.id) != 'ru':
         return
     data = call.data
-    try:
-        if data == "open_buy":
-            _safe_edit_or_send(call, buy_main_text_ru(), build_buy_markup_ru())
-
-        elif data == "buy_copy_ca":
-            uid = call.from_user.id
-            bot.answer_callback_query(call.id, t(uid, "contract_sent"))
-            bot.send_message(
-                call.message.chat.id,
-                f"🔗 *Адрес контракта $KAFKA (BSC):*\n`{CONTRACT}`",
-                parse_mode="Markdown",
-                disable_web_page_preview=True
-            )
-
-        elif data == "buy_howto_ru":
-            text = (
-                "❓ *Как купить $KAFKA*\n\n"
-                "1) *Кошелёк*: MetaMask или OKX Wallet. Сеть — *BNB Smart Chain (BSC)*.\n"
-                "2) *Пополните BNB* для газа.\n"
-                "3) *Импорт токена*: добавьте контракт:\n"
-                f"`{CONTRACT}`\n"
-                "4) *Своп на Pancake/OKX*: выбирайте $KAFKA по адресу контракта.\n"
-                "5) *Слиппедж*: начните с 0.5–1%. Если своп не проходит — слегка увеличьте.\n\n"
-                "💡 *Безопасность*: сверяйте адрес контракта и избегайте неизвестных ссылок."
-            )
-            kb = types.InlineKeyboardMarkup()
-            kb.row(
-                types.InlineKeyboardButton("🥞 Открыть Pancake", url="https://pancakeswap.finance/swap?outputCurrency=0x0023caf04b4fac8b894fc7fa49d38ddc4606a816&chain=bsc")
-            )
-            kb.row(
-                types.InlineKeyboardButton("⬅️ Назад", callback_data="open_buy"),
-                types.InlineKeyboardButton("📋 Скопировать CA", callback_data="buy_copy_ca")
-            )
-            _safe_edit_or_send(call, text, kb)
-
-        else:
-            _safe_edit_or_send(call, buy_main_text_ru(), build_buy_markup_ru())
-    finally:
-        bot.answer_callback_query(call.id)
+    if data == "open_buy":
+        _safe_edit_or_send(call, buy_main_text_ru(), build_buy_markup_ru())
+    elif data == "buy_copy_ca":
+        uid = call.from_user.id
+        bot.answer_callback_query(call.id, t(uid, "contract_sent"))
+        bot.send_message(
+            call.message.chat.id,
+            f"🔗 *Адрес контракта $KAFKA (BSC):*\n`{CONTRACT}`",
+            parse_mode="Markdown",
+            disable_web_page_preview=True
+        )
+    elif data == "buy_howto_ru":
+        text = (
+            "❓ *Как купить $KAFKA*\n\n"
+            "1) *Кошелёк*: MetaMask или OKX Wallet. Сеть — *BNB Smart Chain (BSC)*.\n"
+            "2) *Пополните BNB* для газа.\n"
+            "3) *Импорт токена*: добавьте контракт:\n"
+            f"`{CONTRACT}`\n"
+            "4) *Своп на Pancake/OKX*: выбирайте $KAFKA по адресу контракта.\n"
+            "5) *Слиппедж*: начните с 0.5–1%. Если своп не проходит — слегка увеличьте.\n\n"
+            "💡 *Безопасность*: сверяйте адрес контракта и избегайте неизвестных ссылок."
+        )
+        kb = types.InlineKeyboardMarkup()
+        kb.row(
+            types.InlineKeyboardButton("🥞 Открыть Pancake", url="https://pancakeswap.finance/swap?outputCurrency=0x0023caf04b4fac8b894fc7fa49d38ddc4606a816&chain=bsc")
+        )
+        kb.row(
+            types.InlineKeyboardButton("⬅️ Назад", callback_data="open_buy"),
+            types.InlineKeyboardButton("📋 Скопировать CA", callback_data="buy_copy_ca")
+        )
+        _safe_edit_or_send(call, text, kb)
+    else:
+        _safe_edit_or_send(call, buy_main_text_ru(), build_buy_markup_ru())
+    bot.answer_callback_query(call.id)
