@@ -1,3 +1,4 @@
-from bot import bot
+"""Deprecated: Russian base patch is merged into other handlers.
 
-# (Not needed; Russian menu is now integrated directly in handlers.)
+This module intentionally left blank to preserve backward compatibility.
+"""
