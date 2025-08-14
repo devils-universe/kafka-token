@@ -9,12 +9,12 @@ def game_main_markup(uid):
     return types.InlineKeyboardMarkup()
 
 # Вход через reply-кнопку (англ/рус)
-@bot.message_handler(func=lambda m: m.text in {"🥭 Game", "🎮 Игра"})
+@bot.message_handler(func=lambda m: m.text in {"🥭 Game", "🥭 Игра"})
 def handle_game(message):
     uid = message.from_user.id
     bot.send_message(
         message.chat.id,
-        game_main_text(uid),
+        game_main_text(uid),  # это вернет "🥭 Скоро!" для выбранного языка
         parse_mode="Markdown",
         disable_web_page_preview=True,
         reply_markup=game_main_markup(uid)
