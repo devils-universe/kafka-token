@@ -15,6 +15,7 @@ RELIC_R001_PHOTOS = [
 
 def _relic_keyboard(uid) -> types.InlineKeyboardMarkup:
     kb = types.InlineKeyboardMarkup()
+    # Кнопки: написать мастеру и поделиться адресом
     kb.add(types.InlineKeyboardButton(t(uid, "message_artisan"), url="https://t.me/devils_kafka"))
     share_text = t(uid, "share_text")
     encoded_text = urllib.parse.quote(share_text, safe='')
@@ -22,6 +23,7 @@ def _relic_keyboard(uid) -> types.InlineKeyboardMarkup:
         t(uid, "share_payment"),
         url=f"https://t.me/share/url?url={PAYMENT_ADDRESS}&text={encoded_text}"
     ))
+    # Кнопка возврата в магазин
     kb.add(types.InlineKeyboardButton(t(uid, "back_shop"), callback_data="back_to_shop"))
     return kb
 
@@ -61,7 +63,7 @@ def handle_shoop(message):
         reply_markup=markup
     )
 
-# ВХОД из русского инлайн‑меню (callback_data="open_shoop")
+# Вход из инлайн-меню (callback_data="open_shoop")
 def open(call):
     uid = call.from_user.id
     menu = types.InlineKeyboardMarkup()
@@ -77,6 +79,7 @@ def handle_shop_kafkafilters(call):
     uid = call.from_user.id
     chat_id = call.message.chat.id
 
+    # Отправляем группу фото (описание только к первой)
     media = []
     open_files = []
     caption_text = t(uid, 'relic_caption').format(address=PAYMENT_ADDRESS)
@@ -95,12 +98,14 @@ def handle_shop_kafkafilters(call):
         try:
             bot.send_media_group(chat_id, media)
         finally:
+            # Закрываем файлы после отправки
             for f in open_files:
                 try:
                     f.close()
                 except Exception:
                     pass
 
+    # Отправляем сообщение с кнопками (CTA)
     cta_text = t(uid, 'relic_order').format(address=PAYMENT_ADDRESS)
     bot.send_message(chat_id, cta_text, parse_mode="Markdown", reply_markup=_relic_keyboard(uid))
     bot.answer_callback_query(call.id)
@@ -135,4 +140,3 @@ def back_to_shop(call):
     )
     _safe_edit_or_send(call, t(uid, 'shop_main'), menu)
     bot.answer_callback_query(call.id)
-    
