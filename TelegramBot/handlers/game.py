@@ -21,16 +21,3 @@ def handle_game(message):
         disable_web_page_preview=True,
         reply_markup=game_main_markup(uid)
     )
-
-# Вход через inline‑роутер из base_ru_patch.py (callback_data="open_game")
-def open(call):
-    uid = call.from_user.id
-    bot.edit_message_text(
-        chat_id=call.message.chat.id,
-        message_id=call.message.message_id,
-        text=game_main_text(uid),
-        parse_mode="Markdown",
-        disable_web_page_preview=True,
-        reply_markup=game_main_markup(uid)
-    )
-    
