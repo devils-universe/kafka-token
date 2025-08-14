@@ -1,6 +1,7 @@
 from bot import bot
 from telebot import types
 import logging
+from utils.language import t, get_lang
 
 CONTRACT = "0x0023caf04B4fAc8B894Fc7fA49d38ddc4606a816"
 SITE = "https://devilsuniverse.com"
@@ -34,10 +35,6 @@ def build_buy_markup_ru() -> types.InlineKeyboardMarkup:
     return kb
 
 def _safe_edit_or_send(call, text, reply_markup=None):
-    """
-    Пытаемся отредактировать текущий экран.
-    Если сообщение было медиа/старое и не редактируется — шлём новое.
-    """
     try:
         bot.edit_message_text(
             chat_id=call.message.chat.id,
@@ -57,7 +54,6 @@ def _safe_edit_or_send(call, text, reply_markup=None):
             reply_markup=reply_markup
         )
 
-# reply-кнопка: текст ровно "🪙 Купить $KAFKA"
 @bot.message_handler(func=lambda msg: getattr(msg, "text", "") == "🪙 Купить $KAFKA")
 def handle_buy_ru_message(message):
     bot.send_message(
@@ -68,16 +64,20 @@ def handle_buy_ru_message(message):
         reply_markup=build_buy_markup_ru()
     )
 
-# единый колбэк-хэндлер для всех buy_* и open_buy
-@bot.callback_query_handler(func=lambda c: isinstance(getattr(c, "data", None), str)
+@bot.callback_query_handler(func=lambda c: isinstance(getattr(c, "data", None), str) \
                                        and (c.data == "open_buy" or c.data.startswith("buy_")))
 def cb_buy_router(call):
+    # Ensure this handler only processes Russian buy callbacks
+    if get_lang(call.from_user.id) != 'ru':
+        return
     data = call.data
     try:
         if data == "open_buy":
             _safe_edit_or_send(call, buy_main_text_ru(), build_buy_markup_ru())
 
         elif data == "buy_copy_ca":
+            uid = call.from_user.id
+            bot.answer_callback_query(call.id, t(uid, "contract_sent"))
             bot.send_message(
                 call.message.chat.id,
                 f"🔗 *Адрес контракта $KAFKA (BSC):*\n`{CONTRACT}`",
@@ -107,7 +107,6 @@ def cb_buy_router(call):
             _safe_edit_or_send(call, text, kb)
 
         else:
-            # неизвестная кнопка из buy_*
             _safe_edit_or_send(call, buy_main_text_ru(), build_buy_markup_ru())
     finally:
         bot.answer_callback_query(call.id)
