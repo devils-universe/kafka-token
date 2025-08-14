@@ -2,7 +2,7 @@ from bot import bot
 import handlers.user_handlers
 import handlers.buy
 import handlers.tasks
-import handlers.shoop
+import handlers.shop
 import handlers.airdrop
 import handlers.game
 import handlers.web
