@@ -26,18 +26,6 @@ def handle_airdrop(message):
         reply_markup=airdrop_main_markup(uid)
     )
 
-# вход через inline-роутер
-def open(call):
-    uid = call.from_user.id
-    bot.edit_message_text(
-        chat_id=call.message.chat.id,
-        message_id=call.message.message_id,
-        text=airdrop_main_text(uid),
-        parse_mode="Markdown",
-        disable_web_page_preview=True,
-        reply_markup=airdrop_main_markup(uid)
-    )
-
 @bot.callback_query_handler(func=lambda c: c.data == "airdrop_follow_us")
 def cb_airdrop_follow_us(call):
     uid = call.from_user.id
@@ -55,4 +43,3 @@ def cb_airdrop_follow_us(call):
         disable_web_page_preview=True
     )
     bot.answer_callback_query(call.id)
-    
