@@ -1,10 +1,8 @@
-# TelegramBot/handlers/user_handlers.py
 from telebot import types
 from bot import bot
 from utils.language import t, set_lang, get_lang
-from utils.translations import TRANSLATIONS  # чтобы получать тексты на обоих языках
+from utils.translations import TRANSLATIONS
 
-# Ключи кнопок главного меню (логические)
 MENU_KEYS = ["menu_buy", "menu_tasks", "menu_shop", "menu_aird", "menu_game", "menu_web"]
 
 def label(lang: str, key: str) -> str:
@@ -14,7 +12,6 @@ def label(lang: str, key: str) -> str:
 def build_main_menu(user_id: int) -> types.ReplyKeyboardMarkup:
     lang = get_lang(user_id)
     kb = types.ReplyKeyboardMarkup(resize_keyboard=True)
-
     kb.add(
         types.KeyboardButton(label(lang, "menu_buy")),
         types.KeyboardButton(label(lang, "menu_tasks")),
@@ -25,7 +22,6 @@ def build_main_menu(user_id: int) -> types.ReplyKeyboardMarkup:
         types.KeyboardButton(label(lang, "menu_game")),
         types.KeyboardButton(label(lang, "menu_web")),
     )
-    # Кнопка выбора языка
     kb.add(types.KeyboardButton(t(user_id, "language")))
     return kb
 
@@ -70,43 +66,4 @@ def on_back(message):
     uid = message.from_user.id
     bot.send_message(message.chat.id, t(uid, "menu_title"), reply_markup=build_main_menu(uid))
 
-# === ВАЖНО: перехватываем ТОЛЬКО русские названия разделов, чтобы не бить старые англ. хендлеры ===
-RU_MENU_LABELS = {
-    "menu_buy":   label("ru", "menu_buy"),
-    "menu_tasks": label("ru", "menu_tasks"),
-    "menu_shop":  label("ru", "menu_shop"),
-    "menu_aird":  label("ru", "menu_aird"),
-    "menu_game":  label("ru", "menu_game"),
-    "menu_web":   label("ru", "menu_web"),
-}
-RU_LABEL_SET = set(RU_MENU_LABELS.values())
-
-@bot.message_handler(func=lambda m: m.text in RU_LABEL_SET)
-def on_ru_menu_click(message):
-    """Когда интерфейс на русском — сюда прилетают клики по русским кнопкам меню.
-    На этом шаге даём аккуратные заглушки. На следующем — подвяжем реальные вызовы.
-    """
-    uid = message.from_user.id
-    txt = message.text
-
-    # Определим, какую кнопку нажали
-    clicked_key = None
-    for k, v in RU_MENU_LABELS.items():
-        if v == txt:
-            clicked_key = k
-            break
-
-    if not clicked_key:
-        return
-
-    # Заглушки (переводимые тексты)
-    stub_key = {
-        "menu_buy":   "stub_buy",
-        "menu_tasks": "stub_tasks",
-        "menu_shop":  "stub_shop",
-        "menu_aird":  "stub_aird",
-        "menu_game":  "stub_game",
-        "menu_web":   "stub_web",
-    }[clicked_key]
-
-    bot.send_message(message.chat.id, t(uid, stub_key))
+# RU menu stub removed – all sections now handled by their own handlers
