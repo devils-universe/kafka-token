@@ -68,13 +68,10 @@ def open(call):
     safe_edit_or_send(call, SHOP_MAIN_EN, _menu_en())
 
 # ===== RELIC: KafkaFilters =====
-@bot.callback_query_handler(func=lambda call: call.data == "shop_kafkafilters")
+@bot.callback_query_handler(func=lambda call: call.data == "shop_kafkafilters"
+                                         and get_lang(call.from_user.id) == "en")
 def handle_shop_kafkafilters_en(call):
-    uid = call.from_user.id
-    if get_lang(uid) != "en":
-        return
     chat_id = call.message.chat.id
-
     send_relic_photos_group(chat_id, RELIC_CAPTION_EN.format(address=PAYMENT_ADDRESS))
     bot.send_message(
         chat_id,
@@ -85,12 +82,9 @@ def handle_shop_kafkafilters_en(call):
     bot.answer_callback_query(call.id)
 
 # ===== STICKERS =====
-@bot.callback_query_handler(func=lambda call: call.data == "shop_kafkastickers")
+@bot.callback_query_handler(func=lambda call: call.data == "shop_kafkastickers"
+                                         and get_lang(call.from_user.id) == "en")
 def handle_shop_kafkastickers_en(call):
-    uid = call.from_user.id
-    if get_lang(uid) != "en":
-        return
-
     for sid in STICKER_IDS:
         bot.send_sticker(call.message.chat.id, sid)
 
@@ -106,10 +100,8 @@ def handle_shop_kafkastickers_en(call):
     bot.answer_callback_query(call.id)
 
 # ===== BACK =====
-@bot.callback_query_handler(func=lambda call: call.data == "back_to_shop")
+@bot.callback_query_handler(func=lambda call: call.data == "back_to_shop"
+                                         and get_lang(call.from_user.id) == "en")
 def back_to_shop_en(call):
-    uid = call.from_user.id
-    if get_lang(uid) != "en":
-        return
     safe_edit_or_send(call, SHOP_MAIN_EN, _menu_en())
     bot.answer_callback_query(call.id)
